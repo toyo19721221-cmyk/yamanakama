@@ -1,119 +1,46 @@
 <!doctype html>
 <html lang="ja" class="h-full">
- <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>山仲間募集</title>
-  
-  <link rel="manifest" href="manifest.json">
-  <meta name="theme-color" content="#0284c7">
-  <meta name="apple-mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-status-bar-style" content="default">
-  <meta name="apple-mobile-web-app-title" content="山仲間募集">
-  <link rel="apple-touch-icon" href="https://via.placeholder.com/192"> 
-  <script src="https://cdn.tailwindcss.com"></script>
-  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&amp;display=swap" rel="stylesheet">
-  
-  <style>
-    body {
-      box-sizing: border-box;
-      font-family: 'Noto Sans JP', sans-serif;
-      -webkit-tap-highlight-color: transparent;
-    }
-    .post-card { transition: transform 0.2s, box-shadow 0.2s; }
-    .post-card:hover { transform: translateY(-2px); box-shadow: 0 8px 16px rgba(0,0,0,0.1); }
-    .scroll-container { scrollbar-width: thin; scrollbar-color: #cbd5e1 #f1f5f9; }
-  </style>
- </head>
- <body class="h-full bg-slate-50">
-  <div id="app" class="w-full h-full overflow-auto scroll-container"></div>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>山仲間募集</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Noto Sans JP', sans-serif; }
+    </style>
+</head>
+<body class="h-full bg-slate-50">
+    <div id="app" class="h-full w-full"></div>
 
-  <script>
-    // サービスワーカーの登録
-    if ('serviceWorker' in navigator) {
-      window.addEventListener('load', () => {
-        navigator.serviceWorker.register('./sw.js')
-          .then(reg => console.log('PWA ServiceWorker registered'))
-          .catch(err => console.log('PWA ServiceWorker registration failed', err));
-      });
-    }
-
-    // 設定値の定義
-    const config = {
-      background_color: '#f0f9ff',
-      primary_color: '#0284c7',
-      app_title: '山仲間募集',
-      new_post_button: '新しい募集を作成'
-    };
-
-    let currentView = 'list';
-
-    // メインの描画関数
-    function renderApp() {
-      const app = document.getElementById('app');
-      
-      if (currentView === 'list') {
-        app.innerHTML = `
-          <header class="bg-white shadow-sm p-4 sticky top-0 z-10 flex justify-between items-center">
-            <h1 class="text-xl font-bold" style="color: ${config.primary_color}">${config.app_title}</h1>
-          </header>
-          <main class="p-4">
-            <button id="createPostBtn" class="w-full py-4 rounded-xl text-white font-bold mb-6 shadow-lg transition-transform active:scale-95" style="background-color: ${config.primary_color}">
-              ${config.new_post_button}
-            </button>
-            <div id="postList" class="space-y-4">
-              <div class="bg-white p-8 rounded-2xl shadow-sm text-center border-2 border-dashed border-slate-200">
-                <p class="text-slate-500">現在、募集はありません。<br>最初の募集を作成してみましょう！</p>
-              </div>
-            </div>
-          </main>
-        `;
-      } else if (currentView === 'create') {
-        app.innerHTML = `
-          <header class="bg-white shadow-sm p-4 sticky top-0 z-10 flex items-center">
-            <button id="backBtn" class="p-2 mr-2 text-2xl">←</button>
-            <h1 class="text-xl font-bold">新規募集を作成</h1>
-          </header>
-          <main class="p-4">
-            <div class="bg-white p-6 rounded-2xl shadow-sm">
-              <p class="text-slate-600 mb-4">募集フォームをここに実装します。</p>
-              <button id="cancelBtn" class="w-full py-3 rounded-xl bg-slate-100 text-slate-600 font-bold">キャンセル</button>
-            </div>
-          </main>
-        `;
-      }
-      attachEventListeners();
-    }
-
-    // イベントリスナーの付与
-    function attachEventListeners() {
-      const createBtn = document.getElementById('createPostBtn');
-      if (createBtn) {
-        createBtn.onclick = () => {
-          currentView = 'create';
-          renderApp();
+    <script>
+        // 設定値
+        const config = {
+            primary_color: '#0284c7',
+            app_title: '山仲間募集',
+            new_post_button: '新しい募集を作成'
         };
-      }
 
-      const backBtn = document.getElementById('backBtn');
-      if (backBtn) {
-        backBtn.onclick = () => {
-          currentView = 'list';
-          renderApp();
-        };
-      }
+        // 画面の描画処理
+        function render() {
+            const app = document.getElementById('app');
+            app.innerHTML = `
+                <header class="bg-white shadow-sm p-4">
+                    <h1 class="text-xl font-bold" style="color: ${config.primary_color}">${config.app_title}</h1>
+                </header>
+                <main class="p-4">
+                    <button class="w-full py-4 rounded-xl text-white font-bold shadow-lg" style="background-color: ${config.primary_color}">
+                        ${config.new_post_button}
+                    </button>
+                    <div class="mt-8 p-10 bg-white rounded-2xl border-2 border-dashed border-slate-200 text-center text-slate-400">
+                        現在、募集はありません
+                    </div>
+                </main>
+            `;
+        }
 
-      const cancelBtn = document.getElementById('cancelBtn');
-      if (cancelBtn) {
-        cancelBtn.onclick = () => {
-          currentView = 'list';
-          renderApp();
-        };
-      }
-    }
-
-    // 初回実行
-    renderApp();
-  </script>
- </body>
+        // ページ読み込み時に実行
+        window.onload = render;
+    </script>
+</body>
 </html>
