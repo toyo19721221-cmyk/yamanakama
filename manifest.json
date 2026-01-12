@@ -1,0 +1,21 @@
+{
+  "short_name": "山仲間",
+  "name": "山仲間募集 - 登山コミュニティ",
+  "icons": [
+    {
+      "src": "icon-192.png",
+      "type": "image/png",
+      "sizes": "192x192"
+    },
+    {
+      "src": "icon-512.png",
+      "type": "image/png",
+      "sizes": "512x512"
+    }
+  ],
+  "start_url": "index.html",
+  "background_color": "#f0f9ff",
+  "display": "standalone",
+  "scope": "/",
+  "theme_color": "#0284c7"
+}
