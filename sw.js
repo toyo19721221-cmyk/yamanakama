@@ -1,7 +1,8 @@
 const CACHE_NAME = 'hiking-app-v1';
 const urlsToCache = [
-  '/',
-  '/index.html',
+  '/yamanakama/',
+  '/yamanakama/index.html',
+  '/yamanakama/manifest.json',
   'https://cdn.tailwindcss.com'
 ];
 
